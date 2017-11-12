@@ -27,9 +27,37 @@ const facebookDoc = [
   }
 ]
 
-const slackDoc = {
-  
+const slackDoc = [
+  {
+    "category": "npm",
+    "suggestion": "NPM",
+    "steps": [
+      "Cool, What do you like to learn",
+
+    ],
+    "stepsPrefix": "Okay, here's the next step for NPM integration."
+  },
+  {
+    "category": "rest",
+    "suggestion": "REST",
+    "steps": [
+      "Each bot needs its own API key for tracking. Click the link below to create an unique API key for your project.",
+      "When Facebook posts to your webhook endpoint, post the same data Facebook sent to you to the following endpoint: 'https://tracker.dashbot.io/track?platform=facebook&v=9.4.0-rest&type=incoming&apiKey=API_KEY_HERE'",
+      " Make sure to set the 'Content-Type' header to 'application/json'.",
+      "And when your bot sends a message, POST to the following endpoint: 'https://tracker.dashbot.io/track?platform=facebook&v=9.4.0-rest&type=outgoing&apiKey=API_KEY_HERE'.",
+      "Make sure to set the 'Content-Type' header to 'application/json' just like the earlier post."
+    ],
+    "stepsPrefix": "Okay, here's the next step for REST integration."
+  }
+]
+
+const dialogValues = {
+  "intents": "An intent represents a mapping between what a user says and what action should be taken by your software",
+  "entities": "Look for matches",
+  "event Name" : "Event name is a string up to 50 characters long. It may contain Latin letters (a-z A-Z), digits (0-9), underscore (_), and hyphen (-). Event names are case insensitive."
 }
+
+
 
 const content = {
   "link": "https://www.dashbot.io/bots"
@@ -46,6 +74,7 @@ const general = {
 module.exports = deepFreeze({
   facebookDoc,
   slackDoc,
+  dialogValues,
   content,
   transitions,
   general

@@ -2,15 +2,23 @@ const { DialogflowApp } = require('actions-on-google')
 const functions = require('firebase-functions')
 const { sprintf } = require('sprintf-js')
 
-const config = require('./env.json')
+
 const strings = require('./strings')
 
+const config = require('./node_modules/env.json')
+
+
 const Actions = {
-  TELL_FACEBOOK: 'tell.facebook'
+  TELL_FACEBOOK: 'tell.facebook',
+  TELL_SLACK: 'tell.slack',
+  TELL_DIALOG : 'tell.dialog'
+  
 }
 
 const Contexts = {
-  FACEBOOK: 'choose_facebook-followup'
+  FACEBOOK: 'choose_facebook-followup',
+  //Intent Contexts ouput => manage the flow of the conversantion
+  SLACK: 'choose_slack-followup'
 }
 
 const Parameters = {
@@ -37,19 +45,34 @@ const initData = app => {
 
 const tellFacebook = (app) => {
   const data = initData(app)
-  console.log(app)
+  console.log("This is app", app)
   console.log(data)
 
   const parameter = Parameters.PLATFORM
   const platformCategory = app.getArgument(parameter)
-  console.log('params is ', platformCategory)
-
-  const msg = 'HELLO WORLD FROM TELLFACEBOOK'
-  app.ask(strings.facebookDoc[0].category)
+  console.log('params is', platformCategory)
+  if(platformCategory === "key concepts"){
+    app.ask(strings.slackDoc[0].steps[0])
+  } else if (platformCategory === "facebook") {
+      app.ask(strings.facebookDoc[0].steps[0])
+      console.log("testing ", strings.dialogValues["intents"])
+  } else {
+    console.log("Are u here????")
+    app.ask(strings.dialogValues[platformCategory])
+  }
+  // const msg = 'HELLO WORLD FROM TELLFACEBOOK'
 }
 
+
+
+
+
+
 const actionMap = new Map()
-actionMap.set(Actions.TELL_FACEBOOK, tellFacebook)
+actionMap.set(Actions.TELL_FACEBOOK, tellFacebook);
+// actionMap.set(Actions.TELL_SLACK, tellSlack);
+
+
 
 const documentationDashbot
  = functions.https.onRequest((request, response) => {
